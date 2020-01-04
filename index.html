@@ -1,8 +1,62 @@
+<!DOCTYPE html>
+<html>
+
 <head>
-	<!-- Load plotly.js into the DOM -->
-	<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+  <meta charset="UTF-8">
+  <title>Base Tiles from the USGS</title>
+  <!-- Load plotly.js into the DOM -->
+  <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
 </head>
+<script>
+  Plotly.d3.csv(
+    "https://raw.githubusercontent.com/plotly/datasets/master/2015_06_30_precipitation.csv",
+    function(err, rows) {
+      function unpack(rows, key) {
+        return rows.map(function(row) {
+          return row[key];
+        });
+      }
+      var data = [{
+        type: "scattermapbox",
+        text: unpack(rows, "Globvalue"),
+        lon: unpack(rows, "Lon"),
+        lat: unpack(rows, "Lat"),
+        marker: {
+          color: "fuchsia",
+          size: 4
+        }
+      }];
+      var layout = {
+        dragmode: "zoom",
+        mapbox: {
+          style: "white-bg",
+          layers: [{
+            sourcetype: "raster",
+            source: ["https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryOnly/MapServer/tile/{z}/{y}/{x}"],
+            below: "traces"
+          }],
+          center: {
+            lat: 38,
+            lon: -90
+          },
+          zoom: 3
+        },
+        margin: {
+          r: 0,
+          t: 0,
+          b: 0,
+          l: 0
+        }
+      };
+      Plotly.newPlot('myDiv', data, layout);
+    }
+  );
+</script>
 
 <body>
-	<div id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>
+  <div id='myDiv'>
+    <!-- Plotly chart will be drawn inside this DIV -->
+  </div>
 </body>
+
+</html>
