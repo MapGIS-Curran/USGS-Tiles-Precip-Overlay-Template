@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <meta charset="UTF-8">
   <title>Base Tiles from the USGS</title>
   <!-- Load plotly.js into the DOM -->
   <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+  <!--
+<script type = "text/javascript" src = "filename.js" ></script>
+-->
 </head>
-<script>
-  Plotly.d3.csv(
-    "https://raw.githubusercontent.com/plotly/datasets/master/2015_06_30_precipitation.csv",
+<body>
+  <!-- Plotly chart will be drawn inside this DIV -->
+  <div id='myDiv'></div>
+  <script>
+ /* JAVASCRIPT CODE GOES HERE */
+  Plotly.d3.csv("https://raw.githubusercontent.com/plotly/datasets/master/2015_06_30_precipitation.csv",
     function(err, rows) {
       function unpack(rows, key) {
         return rows.map(function(row) {
@@ -45,18 +50,11 @@
           r: 0,
           t: 0,
           b: 0,
-          l: 0
-        }
+          l: 0 }
       };
       Plotly.newPlot('myDiv', data, layout);
     }
   );
 </script>
-
-<body>
-  <div id='myDiv'>
-    <!-- Plotly chart will be drawn inside this DIV -->
-  </div>
 </body>
-
 </html>
